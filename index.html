@@ -86,24 +86,25 @@
     .highlight-card:hover .highlight-label { color: var(--text); transform: scale(1.04); }
 
     /* APP SWIPER */
-    .swiper-section { display: flex; flex-direction: column; align-items: center; gap: 1.6rem; padding-bottom: 1.5rem; }
-    .swiper-stage { position: relative; width: 100%; max-width: 390px; height: 490px; }
+    .swiper-section { display: flex; flex-direction: column; align-items: center; gap: 1.6rem; padding-bottom: 1.5rem; width: 100%; }
+    .swiper-stage { position: relative; width: 100%; max-width: 420px; height: 490px; overflow: visible; }
     .swiper-card {
       position: absolute; inset: 0;
       background: var(--card); border: 1px solid var(--border); border-radius: 18px;
       padding: 1.2rem; display: flex; flex-direction: column;
       will-change: transform;
+      transform-origin: center 115%;
       transition: transform 0.42s cubic-bezier(0.25,0.46,0.45,0.94), box-shadow 0.42s ease, opacity 0.42s ease;
       cursor: grab; user-select: none; overflow: hidden;
     }
     .swiper-card:active { cursor: grabbing; }
-    .swiper-card[data-pos="0"] { transform: translateY(0px) scale(1); z-index: 3; box-shadow: 0 24px 64px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.04); }
-    .swiper-card[data-pos="1"] { transform: translateY(16px) scale(0.95); z-index: 2; box-shadow: 0 12px 32px rgba(0,0,0,0.35); pointer-events: none; }
-    .swiper-card[data-pos="2"] { transform: translateY(28px) scale(0.9); z-index: 1; opacity: 0.6; box-shadow: 0 6px 16px rgba(0,0,0,0.25); pointer-events: none; }
+    .swiper-card[data-pos="0"] { transform: rotate(0deg) scale(1);    z-index: 3; box-shadow: 0 24px 64px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.05); }
+    .swiper-card[data-pos="1"] { transform: rotate(7deg) scale(0.97); z-index: 2; box-shadow: 0 14px 36px rgba(0,0,0,0.4);  pointer-events: none; }
+    .swiper-card[data-pos="2"] { transform: rotate(14deg) scale(0.94);z-index: 1; box-shadow: 0 8px 20px rgba(0,0,0,0.3);   pointer-events: none; opacity: 0.65; }
     .swiper-card.dragging { transition: none !important; cursor: grabbing; }
     .swiper-card.no-transition { transition: none !important; }
-    .swiper-card.fly-left  { transform: translateX(-140%) rotate(-18deg) scale(0.88) !important; opacity: 0 !important; pointer-events: none; }
-    .swiper-card.fly-right { transform: translateX( 140%) rotate( 18deg) scale(0.88) !important; opacity: 0 !important; pointer-events: none; }
+    .swiper-card.fly-left  { transform: translateX(-150%) rotate(-20deg) scale(0.85) !important; opacity: 0 !important; pointer-events: none; }
+    .swiper-card.fly-right { transform: translateX( 150%) rotate( 20deg) scale(0.85) !important; opacity: 0 !important; pointer-events: none; }
 
     /* SWIPER CARD INTERNALS */
     .sc-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
@@ -224,7 +225,6 @@
       <div class="stat-item"><span class="stat-num">15<span>+</span></span><span class="stat-label">Years in Ops</span></div>
       <div class="stat-item"><span class="stat-num">3</span><span class="stat-label">Published Apps</span></div>
       <div class="stat-item"><span class="stat-num">100</span><span class="stat-label">Max Team Size</span></div>
-      <div class="stat-item"><span class="stat-num">900<span>K</span></span><span class="stat-label">Offenders Tracked</span></div>
     </div>
   </div>
 
@@ -582,10 +582,10 @@
         var back  = cards[order[2]];
         var rot   = dragDx * 0.07;
         top.style.transform = 'translateX(' + dragDx + 'px) rotate(' + rot + 'deg)';
-        // Preview: pull the cards behind forward as drag progresses
+        // Fan collapses toward front card as drag progresses
         var prog = Math.min(Math.abs(dragDx) / 120, 1);
-        mid.style.transform  = 'translateY(' + (16 - 16 * prog) + 'px) scale(' + (0.95 + 0.05 * prog) + ')';
-        back.style.transform = 'translateY(' + (28 - 12 * prog) + 'px) scale(' + (0.90 + 0.05 * prog) + ')';
+        mid.style.transform  = 'rotate(' + (7  * (1 - prog)) + 'deg) scale(' + (0.97 + 0.03 * prog) + ')';
+        back.style.transform = 'rotate(' + (14 * (1 - prog)) + 'deg) scale(' + (0.94 + 0.06 * prog) + ')';
       }
 
       function onDragEnd() {
