@@ -55,7 +55,7 @@
     /* NAV */
     .nav-tabs { display: flex; padding: 0.8rem 1.2rem; gap: 8px; background: rgba(13,17,23,0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); overflow-x: auto; scrollbar-width: none; position: sticky; top: 0; z-index: 10; border-bottom: 1px solid rgba(255,255,255,0.06); }
     .nav-tabs::-webkit-scrollbar { display: none; }
-    .tab-btn { position: relative; z-index: 1; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 0.65rem 1rem; font-family: 'DM Mono', monospace; font-size: 12px; color: rgba(255,255,255,0.55); cursor: pointer; white-space: nowrap; letter-spacing: 0.04em; position: relative; transition: all 0.3s cubic-bezier(0.4,0,0.2,1); flex: 1; text-align: center; min-width: 72px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: inset 0 1px 0 rgba(255,255,255,0.1), inset 0 -1px 0 rgba(0,0,0,0.2), 0 2px 8px rgba(0,0,0,0.2); overflow: hidden; }
+    .tab-btn { position: relative; z-index: 1; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 0.65rem 1rem; font-family: 'DM Mono', monospace; font-size: 12px; color: rgba(255,255,255,0.55); cursor: pointer; white-space: nowrap; letter-spacing: 0.04em; transition: all 0.3s cubic-bezier(0.4,0,0.2,1); flex: 1; text-align: center; min-width: 72px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: inset 0 1px 0 rgba(255,255,255,0.1), inset 0 -1px 0 rgba(0,0,0,0.2), 0 2px 8px rgba(0,0,0,0.2); overflow: hidden; }
     .tab-btn::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.03) 50%, rgba(255,255,255,0.0) 100%); border-radius: 12px; pointer-events: none; }
     .tab-btn::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent); pointer-events: none; z-index: 0; }
     .tab-btn:hover { color: rgba(255,255,255,0.85); background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); transform: translateY(-2px); box-shadow: inset 0 1px 0 rgba(255,255,255,0.18), inset 0 -1px 0 rgba(0,0,0,0.2), 0 6px 20px rgba(0,0,0,0.3), 0 1px 0 rgba(255,255,255,0.05); }
@@ -85,50 +85,85 @@
     .highlight-label { font-size: 11px; color: var(--muted); line-height: 1.5; display: block; transition: color 0.2s, transform 0.18s ease; }
     .highlight-card:hover .highlight-label { color: var(--text); transform: scale(1.04); }
 
-    /* APPS */
-    .apps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 1rem; }
-    .app-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem; transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease; cursor: default; }
-    .app-card:hover { border-color: rgba(26,86,219,0.5); transform: translateY(-6px); box-shadow: 0 16px 48px rgba(26,86,219,0.14); }
-    .app-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 0.8rem; }
-    .app-icon { width: 46px; height: 46px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; transition: transform 0.25s ease; }
-    .app-card:hover .app-icon { transform: scale(1.15) rotate(-6deg); }
-    .app-badges { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
+    /* APP SWIPER */
+    .swiper-section { display: flex; flex-direction: column; align-items: center; gap: 1.6rem; padding-bottom: 1.5rem; }
+    .swiper-stage { position: relative; width: 100%; max-width: 390px; height: 490px; }
+    .swiper-card {
+      position: absolute; inset: 0;
+      background: var(--card); border: 1px solid var(--border); border-radius: 18px;
+      padding: 1.2rem; display: flex; flex-direction: column;
+      will-change: transform;
+      transition: transform 0.42s cubic-bezier(0.25,0.46,0.45,0.94), box-shadow 0.42s ease, opacity 0.42s ease;
+      cursor: grab; user-select: none; overflow: hidden;
+    }
+    .swiper-card:active { cursor: grabbing; }
+    .swiper-card[data-pos="0"] { transform: translateY(0px) scale(1); z-index: 3; box-shadow: 0 24px 64px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.04); }
+    .swiper-card[data-pos="1"] { transform: translateY(16px) scale(0.95); z-index: 2; box-shadow: 0 12px 32px rgba(0,0,0,0.35); pointer-events: none; }
+    .swiper-card[data-pos="2"] { transform: translateY(28px) scale(0.9); z-index: 1; opacity: 0.6; box-shadow: 0 6px 16px rgba(0,0,0,0.25); pointer-events: none; }
+    .swiper-card.dragging { transition: none !important; cursor: grabbing; }
+    .swiper-card.no-transition { transition: none !important; }
+    .swiper-card.fly-left  { transform: translateX(-140%) rotate(-18deg) scale(0.88) !important; opacity: 0 !important; pointer-events: none; }
+    .swiper-card.fly-right { transform: translateX( 140%) rotate( 18deg) scale(0.88) !important; opacity: 0 !important; pointer-events: none; }
+
+    /* SWIPER CARD INTERNALS */
+    .sc-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .sc-icon { width: 58px; height: 58px; border-radius: 13px; flex-shrink: 0; object-fit: cover; box-shadow: 0 4px 14px rgba(0,0,0,0.45); }
+    .sc-name { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 800; color: #fff; display: block; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color 0.2s; }
+    .swiper-card[data-pos="0"]:hover .sc-name { color: #60A5FA; }
+    .sc-sub { font-size: 10px; color: var(--muted); display: block; margin-bottom: 5px; line-height: 1.4; }
+    .sc-screenshots { display: flex; gap: 5px; height: 195px; margin-bottom: 11px; border-radius: 10px; overflow: hidden; flex-shrink: 0; }
+    .sc-shot { flex: 1; object-fit: cover; object-position: center bottom; border-radius: 8px; min-width: 0; display: block; pointer-events: none; }
+    .sc-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
+
+    .app-badges { display: flex; gap: 4px; flex-wrap: wrap; }
     .app-badge { font-size: 9px; padding: 2px 7px; border-radius: 4px; letter-spacing: 0.05em; text-transform: uppercase; display: inline-block; }
     .badge-ios { background: rgba(26,86,219,0.15); color: #60A5FA; border: 1px solid rgba(26,86,219,0.3); }
     .badge-android { background: rgba(6,182,212,0.12); color: #22D3EE; border: 1px solid rgba(6,182,212,0.25); }
     .badge-live { background: rgba(16,185,129,0.12); color: #34D399; border: 1px solid rgba(16,185,129,0.25); }
-    .app-name { font-family: 'Syne', sans-serif; font-size: 1.05rem; font-weight: 700; color: #fff; margin-bottom: 3px; display: block; transition: color 0.2s, transform 0.18s ease; }
-    .app-card:hover .app-name { color: #60A5FA; transform: scale(1.03); }
-    .app-tagline { font-size: 11px; color: var(--muted); margin-bottom: 0.8rem; line-height: 1.6; display: block; transition: color 0.2s, transform 0.18s ease; }
-    .app-card:hover .app-tagline { color: var(--text); transform: scale(1.015); }
     .skill-tags { display: flex; flex-wrap: wrap; gap: 5px; }
     .skill-tag { font-size: 10px; padding: 3px 8px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 4px; color: var(--muted); display: inline-block; transition: color 0.18s, border-color 0.18s, transform 0.18s, background 0.18s; cursor: default; }
-    .app-stats { display: flex; gap: 1rem; border-top: 1px solid var(--border); padding-top: 0.8rem; margin-top: 0.6rem; }
-    .app-stat-num { font-family: 'Syne', sans-serif; font-size: 0.95rem; font-weight: 700; color: #fff; display: block; transition: transform 0.2s, color 0.2s; }
-    .app-card:hover .app-stat-num { transform: scale(1.07); color: #60A5FA; }
+    .app-stats { display: flex; gap: 1rem; border-top: 1px solid var(--border); padding-top: 0.7rem; margin-top: auto; }
+    .app-stat-num { font-family: 'Syne', sans-serif; font-size: 0.9rem; font-weight: 700; color: #fff; display: block; transition: color 0.2s; }
+    .swiper-card[data-pos="0"]:hover .app-stat-num { color: #60A5FA; }
     .app-stat-label { font-size: 9px; color: var(--muted); letter-spacing: 0.04em; display: block; }
-    .app-link { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; color: #60A5FA; text-decoration: none; margin-top: 0.7rem; letter-spacing: 0.03em; transition: opacity 0.2s, transform 0.18s ease; }
-    .app-link:hover { opacity: 0.8; transform: scale(1.08) translateX(3px); }
+    .app-link { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; color: #60A5FA; text-decoration: none; margin-top: 7px; letter-spacing: 0.03em; transition: opacity 0.2s, transform 0.18s ease; }
+    .app-link:hover { opacity: 0.8; transform: scale(1.06) translateX(3px); }
+    @keyframes badge-glow {
+      0%, 100% { filter: drop-shadow(0 0 3px rgba(96,165,250,0.25)); }
+      50%       { filter: drop-shadow(0 0 9px rgba(96,165,250,0.6)); }
+    }
+    .store-badges { display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 10px; }
+    .store-badge { display: inline-block; transition: transform 0.18s ease; }
+    .store-badge img { height: 40px; width: auto; display: block; animation: badge-glow 2.8s ease-in-out infinite; }
+    .store-badge:hover { transform: scale(1.07); }
+    .store-badge:hover img { animation: none; filter: drop-shadow(0 0 12px rgba(96,165,250,0.75)); }
+
+    .swiper-controls { display: flex; align-items: center; gap: 1.1rem; }
+    .swiper-btn { width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: var(--muted); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 15px; transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.18s; }
+    .swiper-btn:hover { background: rgba(26,86,219,0.2); color: #60A5FA; border-color: rgba(26,86,219,0.4); transform: scale(1.12); }
+    .swiper-dots { display: flex; gap: 8px; }
+    .swiper-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.15); border: none; cursor: pointer; padding: 0; transition: background 0.3s, transform 0.3s, box-shadow 0.3s; }
+    .swiper-dot.active { background: var(--blue); transform: scale(1.35); box-shadow: 0 0 10px rgba(26,86,219,0.7); }
+    .swiper-hint { font-size: 10px; color: rgba(255,255,255,0.18); letter-spacing: 0.1em; text-transform: uppercase; }
 
     /* TIMELINE */
-    .timeline-item { display: grid; grid-template-columns: 130px 1fr; gap: 1.5rem; margin-bottom: 2.2rem; transition: transform 0.22s ease; cursor: default; }
-    .timeline-item:hover { transform: translateX(6px); }
-    .tl-dates { text-align: right; padding-top: 2px; }
-    .tl-year { font-size: 11px; color: var(--muted); line-height: 1.5; display: block; transition: color 0.2s; }
+    .timeline-item { display: grid; grid-template-columns: 110px 1fr; gap: 2rem; margin-bottom: 2.8rem; transition: transform 0.22s ease; cursor: default; }
+    .timeline-item:hover { transform: translateX(5px); }
+    .tl-dates { text-align: right; padding-top: 4px; }
+    .tl-year { font-size: 12px; color: var(--muted); line-height: 1.7; display: block; transition: color 0.2s; letter-spacing: 0.02em; }
     .timeline-item:hover .tl-year { color: var(--text); }
-    .tl-current { display: inline-block; background: rgba(26,86,219,0.2); border: 1px solid rgba(26,86,219,0.4); color: #60A5FA; font-size: 9px; padding: 2px 6px; border-radius: 4px; margin-top: 4px; letter-spacing: 0.06em; }
-    .tl-body { padding-left: 1.5rem; border-left: 2px solid var(--border); position: relative; transition: border-color 0.2s; }
-    .timeline-item:hover .tl-body { border-left-color: rgba(26,86,219,0.6); }
-    .tl-body::before { content: ''; position: absolute; left: -5px; top: 7px; width: 8px; height: 8px; border-radius: 50%; background: var(--dark); border: 2px solid var(--blue); transition: transform 0.22s ease, background 0.22s; }
-    .timeline-item:hover .tl-body::before { transform: scale(1.5); background: var(--blue); }
-    .tl-role { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 2px; display: block; transition: color 0.2s, transform 0.18s; }
-    .timeline-item:hover .tl-role { color: #60A5FA; transform: scale(1.02); }
-    .tl-company { font-size: 11px; color: #60A5FA; margin-bottom: 0.8rem; display: block; transition: transform 0.18s; }
-    .timeline-item:hover .tl-company { transform: scale(1.02); }
+    .tl-current { display: inline-block; background: rgba(26,86,219,0.2); border: 1px solid rgba(26,86,219,0.4); color: #60A5FA; font-size: 9px; padding: 3px 7px; border-radius: 4px; margin-top: 5px; letter-spacing: 0.06em; }
+    .tl-body { padding-left: 1.8rem; border-left: 2px solid rgba(255,255,255,0.1); position: relative; transition: border-color 0.2s; }
+    .timeline-item:hover .tl-body { border-left-color: rgba(26,86,219,0.7); }
+    .tl-body::before { content: ''; position: absolute; left: -5px; top: 9px; width: 8px; height: 8px; border-radius: 50%; background: var(--dark); border: 2px solid var(--blue); transition: transform 0.22s ease, background 0.22s; }
+    .timeline-item:hover .tl-body::before { transform: scale(1.6); background: var(--blue); }
+    .tl-role { font-family: 'Syne', sans-serif; font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 3px; display: block; transition: color 0.2s; line-height: 1.3; }
+    .timeline-item:hover .tl-role { color: #60A5FA; }
+    .tl-company { font-size: 12px; color: #60A5FA; margin-bottom: 1rem; display: block; opacity: 0.85; letter-spacing: 0.02em; }
     .tl-bullets { list-style: none; }
-    .tl-bullets li { font-size: 12px; color: var(--muted); padding: 3px 0 3px 14px; position: relative; line-height: 1.7; display: block; transition: color 0.18s, transform 0.18s; cursor: default; }
-    .tl-bullets li::before { content: '›'; position: absolute; left: 0; color: var(--blue); transition: transform 0.18s; }
-    .tl-bullets li:hover { color: var(--text); transform: translateX(6px) scale(1.02); }
+    .tl-bullets li { font-size: 13px; color: rgba(230,237,243,0.7); padding: 4px 0 4px 18px; position: relative; line-height: 1.75; display: block; transition: color 0.18s, transform 0.18s; cursor: default; }
+    .tl-bullets li::before { content: '›'; position: absolute; left: 0; color: var(--blue); font-size: 16px; line-height: 1.5; transition: transform 0.18s; }
+    .tl-bullets li:hover { color: #E6EDF3; transform: translateX(5px); }
     .tl-bullets li:hover::before { transform: translateX(2px); }
 
     /* SKILLS */
@@ -148,10 +183,12 @@
       .nav-tabs { padding: 0.6rem 0.8rem; gap: 6px; }
       .tab-panel { padding: 1.5rem 1.2rem; }
       .stat-strip { grid-template-columns: repeat(2,1fr); }
-      .timeline-item { grid-template-columns: 1fr; }
+      .timeline-item { grid-template-columns: 1fr; gap: 0.5rem; }
       .tl-dates { text-align: left; }
+      .tl-year { display: inline; }
       .highlight-row { grid-template-columns: 1fr; }
       .resume-footer { flex-direction: column; align-items: flex-start; }
+      .swiper-stage { height: 510px; }
     }
   </style>
 </head>
@@ -212,52 +249,99 @@
 
     <div class="tab-panel" id="tab-apps">
       <div class="section-label">Published Applications</div>
-      <div class="apps-grid">
-        <div class="app-card">
-          <div class="app-header">
-            <div class="app-icon" style="background:rgba(26,86,219,0.15);">🛡️</div>
-            <div class="app-badges"><span class="app-badge badge-live">Live</span><span class="app-badge badge-ios">iOS</span></div>
+      <div class="swiper-section">
+        <div class="swiper-stage" id="appSwiper">
+
+          <!-- Card 0: Safeguard -->
+          <div class="swiper-card" data-pos="0">
+            <div class="sc-header">
+              <img class="sc-icon" src="assets/safeguard-icon.png" alt="Safeguard" />
+              <div style="flex:1;min-width:0;">
+                <span class="sc-name">Safeguard</span>
+                <span class="sc-sub">Real-time child safety &amp; offender alerts</span>
+                <div class="app-badges"><span class="app-badge badge-live">Live</span><span class="app-badge badge-ios">iOS</span></div>
+              </div>
+            </div>
+            <div class="sc-screenshots">
+              <img class="sc-shot" src="assets/sg-02.png" alt="Smart Alerts" />
+              <img class="sc-shot" src="assets/sg-04.png" alt="Location History" />
+              <img class="sc-shot" src="assets/sg-05.png" alt="Instant SOS" />
+            </div>
+            <div class="sc-tags"><span class="skill-tag">Flutter</span><span class="skill-tag">Supabase</span><span class="skill-tag">PostGIS</span><span class="skill-tag">Vercel</span><span class="skill-tag">RevenueCat</span></div>
+            <div class="app-stats">
+              <div><span class="app-stat-num">900K+</span><span class="app-stat-label">Offenders tracked</span></div>
+              <div><span class="app-stat-num">&lt;3s</span><span class="app-stat-label">Alert delivery</span></div>
+              <div><span class="app-stat-num">$9.99</span><span class="app-stat-label">Premium/mo</span></div>
+            </div>
+            <div class="store-badges">
+              <a class="store-badge" href="https://getsafeguard.app" target="_blank"><img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store" /></a>
+            </div>
           </div>
-          <span class="app-name">Safeguard</span>
-          <span class="app-tagline">Real-time child safety app with sex offender proximity alerts, geofencing, one-tap SOS, and lock-screen push notifications. Tracks 900K+ registered offenders via NSOPW.</span>
-          <div class="skill-tags" style="margin-bottom:0.6rem;"><span class="skill-tag">Flutter</span><span class="skill-tag">Supabase</span><span class="skill-tag">PostGIS</span><span class="skill-tag">Vercel</span><span class="skill-tag">RevenueCat</span></div>
-          <div class="app-stats">
-            <div><span class="app-stat-num">900K+</span><span class="app-stat-label">Offenders tracked</span></div>
-            <div><span class="app-stat-num">&lt;3s</span><span class="app-stat-label">Alert delivery</span></div>
-            <div><span class="app-stat-num">$9.99</span><span class="app-stat-label">Premium/mo</span></div>
+
+          <!-- Card 1: TakeMySpot -->
+          <div class="swiper-card" data-pos="1">
+            <div class="sc-header">
+              <img class="sc-icon" src="assets/takemyspot-icon.png" alt="TakeMySpot" style="border-radius:16px;" />
+              <div style="flex:1;min-width:0;">
+                <span class="sc-name">TakeMySpot</span>
+                <span class="sc-sub">Peer-to-peer parking marketplace</span>
+                <div class="app-badges"><span class="app-badge badge-live">Live</span><span class="app-badge badge-ios">iOS</span><span class="app-badge badge-android">Android</span></div>
+              </div>
+            </div>
+            <div class="sc-screenshots">
+              <img class="sc-shot" src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/87/50/72/875072cc-e432-4322-ee76-bdc3f51d9dac/01.png/400x870bb.png" alt="Premium Parking" />
+              <img class="sc-shot" src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/56/55/52/56555256-741a-e34f-5997-fd94587e4b08/02.png/400x870bb.png" alt="Find Spot" />
+              <img class="sc-shot" src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/53/bf/0c/53bf0cac-3557-14f3-1cb8-fd7b91476833/04.png/400x870bb.png" alt="Earnings" />
+            </div>
+            <div class="sc-tags"><span class="skill-tag">Flutter</span><span class="skill-tag">Stripe</span><span class="skill-tag">Apple Pay</span><span class="skill-tag">Google Pay</span><span class="skill-tag">Web Admin</span></div>
+            <div class="app-stats">
+              <div><span class="app-stat-num">$150+</span><span class="app-stat-label">Avg/mo earned</span></div>
+              <div><span class="app-stat-num">80%</span><span class="app-stat-label">Owner payout</span></div>
+              <div><span class="app-stat-num">$0</span><span class="app-stat-label">Cost to buildings</span></div>
+            </div>
+            <div class="store-badges">
+              <a class="store-badge" href="https://apps.apple.com/us/app/takemyspot-parking/id6759077527" target="_blank"><img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store" /></a>
+            </div>
           </div>
-          <a class="app-link" href="https://getsafeguard.app" target="_blank">getsafeguard.app ↗</a>
+
+          <!-- Card 2: SchedulerMVP -->
+          <div class="swiper-card" data-pos="2">
+            <div class="sc-header">
+              <img class="sc-icon" src="assets/scheduler-icon.png" alt="SchedulerMVP" style="border-radius:18px;" />
+              <div style="flex:1;min-width:0;">
+                <span class="sc-name">SchedulerMVP</span>
+                <span class="sc-sub">Business workforce scheduling</span>
+                <div class="app-badges"><span class="app-badge badge-live">Live</span><span class="app-badge badge-ios">iOS</span></div>
+              </div>
+            </div>
+            <div class="sc-screenshots">
+              <img class="sc-shot" src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/22/b1/80/22b180e0-5c0e-511c-ac69-7ac4d127e72e/01.png/400x870bb.png" alt="Smart Scheduling" />
+              <img class="sc-shot" src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/b7/75/ff/b775ff0b-6edc-f250-226a-31c6d51eb998/02.png/400x870bb.png" alt="Schedule View" />
+              <img class="sc-shot" src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/c1/d7/31/c1d7315a-c18b-907a-501b-db1c439c83b1/03.png/400x870bb.png" alt="Team View" />
+            </div>
+            <div class="sc-tags"><span class="skill-tag">Flutter</span><span class="skill-tag">Push Notifications</span><span class="skill-tag">PDF Export</span><span class="skill-tag">Auto-fill</span></div>
+            <div class="app-stats">
+              <div><span class="app-stat-num">Free</span><span class="app-stat-label">To download</span></div>
+              <div><span class="app-stat-num">v1.3</span><span class="app-stat-label">Current version</span></div>
+              <div><span class="app-stat-num">Business</span><span class="app-stat-label">Category</span></div>
+            </div>
+            <div class="store-badges">
+              <a class="store-badge" href="https://apps.apple.com/us/app/schedulermvp/id6758640813" target="_blank"><img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store" /></a>
+            </div>
+          </div>
+
         </div>
-        <div class="app-card">
-          <div class="app-header">
-            <div class="app-icon" style="background:rgba(6,182,212,0.12);">🅿️</div>
-            <div class="app-badges"><span class="app-badge badge-live">Live</span><span class="app-badge badge-ios">iOS</span><span class="app-badge badge-android">Android</span></div>
+
+        <div class="swiper-controls">
+          <button class="swiper-btn" onclick="swiperPrev()">←</button>
+          <div class="swiper-dots">
+            <button class="swiper-dot active" onclick="swiperGoTo(0)"></button>
+            <button class="swiper-dot"        onclick="swiperGoTo(1)"></button>
+            <button class="swiper-dot"        onclick="swiperGoTo(2)"></button>
           </div>
-          <span class="app-name">TakeMySpot</span>
-          <span class="app-tagline">Peer-to-peer parking marketplace for condo and apartment residents to rent their spots and earn passively. Includes free web admin panel for building managers.</span>
-          <div class="skill-tags" style="margin-bottom:0.6rem;"><span class="skill-tag">Flutter</span><span class="skill-tag">Stripe</span><span class="skill-tag">Apple Pay</span><span class="skill-tag">Google Pay</span><span class="skill-tag">Web Admin</span></div>
-          <div class="app-stats">
-            <div><span class="app-stat-num">$150+</span><span class="app-stat-label">Avg/mo earned</span></div>
-            <div><span class="app-stat-num">80%</span><span class="app-stat-label">Owner payout</span></div>
-            <div><span class="app-stat-num">$0</span><span class="app-stat-label">Cost to buildings</span></div>
-          </div>
-          <a class="app-link" href="https://takemyspot.net" target="_blank">takemyspot.net ↗</a>
+          <button class="swiper-btn" onclick="swiperNext()">→</button>
         </div>
-        <div class="app-card">
-          <div class="app-header">
-            <div class="app-icon" style="background:rgba(99,153,34,0.12);">📅</div>
-            <div class="app-badges"><span class="app-badge badge-live">Live</span><span class="app-badge badge-ios">iOS</span></div>
-          </div>
-          <span class="app-name">SchedulerMVP</span>
-          <span class="app-tagline">Business workforce scheduling for small and mid-size teams — shifts, time-off requests, swap approvals, team messaging, and real-time push alerts.</span>
-          <div class="skill-tags" style="margin-bottom:0.6rem;"><span class="skill-tag">Flutter</span><span class="skill-tag">Push Notifications</span><span class="skill-tag">PDF Export</span><span class="skill-tag">Auto-fill</span></div>
-          <div class="app-stats">
-            <div><span class="app-stat-num">Free</span><span class="app-stat-label">To download</span></div>
-            <div><span class="app-stat-num">v1.3</span><span class="app-stat-label">Current version</span></div>
-            <div><span class="app-stat-num">Business</span><span class="app-stat-label">App category</span></div>
-          </div>
-          <a class="app-link" href="https://apps.apple.com/us/app/schedulermvp/id6758640813" target="_blank">View on App Store ↗</a>
-        </div>
+        <div class="swiper-hint">drag · swipe · or use arrows</div>
       </div>
     </div>
 
@@ -333,7 +417,7 @@
         <div class="section-label">Education & Certifications</div>
         <div class="skills-grid">
           <div class="skill-group"><span class="skill-group-title">Education</span><div class="skill-tags"><span class="skill-tag">HarvardX — Computer Science</span><span class="skill-tag">Tinley Park High School, 2004</span></div></div>
-          <div class="skill-group"><span class="skill-group-title">Certifications</span><div class="skill-tags"><span class="skill-tag">SQF</span><span class="skill-tag">AIB</span><span class="skill-tag">Forklift Certified</span></div></div>
+          <div class="skill-group"><span class="skill-group-title">Certifications</span><div class="skill-tags"><span class="skill-tag">SQF</span><span class="skill-tag">AIB</span><span class="skill-tag">Forklift Certified</span><span class="skill-tag">Supervisory Skills 1</span><span class="skill-tag">Supervisory Skills 2</span><span class="skill-tag">Lean Management</span><span class="skill-tag">6S</span><span class="skill-tag">CPR</span></div></div>
         </div>
       </div>
     </div>
@@ -350,42 +434,202 @@
     </div>
   </footer>
 
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-    let current = 'summary';
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+  <script>
+    // ── TAB SWITCHING ──────────────────────────────────────────────
+    var currentTab = 'summary';
+    var tabAnimating = false;
 
     function showTab(id, btn) {
-      if (id === current) return;
+      if (id === currentTab || tabAnimating) return;
+      tabAnimating = true;
 
-      const oldPanel = document.getElementById('tab-' + current);
-      const newPanel = document.getElementById('tab-' + id);
+      var oldPanel = document.getElementById('tab-' + currentTab);
+      var newPanel = document.getElementById('tab-' + id);
 
       oldPanel.style.animation = 'fadeSlideOut 0.2s cubic-bezier(0.4,0,0.2,1) both';
 
-      setTimeout(() => {
+      setTimeout(function () {
         oldPanel.style.animation = '';
-        oldPanel.classList.remove('active');
+        oldPanel.classList.remove('active', 'exit');
         newPanel.classList.add('active');
         newPanel.style.animation = 'none';
-        newPanel.offsetHeight;
+        newPanel.offsetHeight; // reflow
         newPanel.style.animation = '';
-      }, 180);
+        tabAnimating = false;
+      }, 200);
 
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(function (b) { b.classList.remove('active'); });
       btn.classList.add('active');
-      current = id;
+      currentTab = id;
     }
-  </script><script>
-    let current = 'summary';
-    let animating = false;
 
-    function showTab(id, btn) {
-      if (id === current || animating) return;
-      animating = true;
+    // ── LAYERED CARD SWIPER ────────────────────────────────────────
+    (function () {
+      var stage = document.getElementById('appSwiper');
+      if (!stage) return;
 
-      const oldPanel = document.getElementById('tab-' + current);
-      const newPanel = document.getElementById('tab-' + id);
+      var cards   = Array.from(stage.querySelectorAll('.swiper-card'));
+      var dots    = Array.from(document.querySelectorAll('.swiper-dot'));
+      // order[0] = index of the front (top) card
+      var order   = [0, 1, 2];
+      var busy    = false;
 
-      oldPanel.classList.add('exit');
+      // drag state
+      var dragActive = false;
+      var dragStartX = 0;
+      var dragDx     = 0;
 
-      setTimeout(() => {
-        oldPanel.classList.remo
+      /* ---- helpers ---- */
+      function applyPositions(instant) {
+        cards.forEach(function (card, i) {
+          var pos = order.indexOf(i);
+          if (instant) card.classList.add('no-transition');
+          card.dataset.pos = pos;
+          card.style.transform = '';
+          if (instant) {
+            // Remove no-transition after a frame so the position snaps then transitions resume
+            requestAnimationFrame(function () { card.classList.remove('no-transition'); });
+          }
+        });
+        syncDots();
+      }
+
+      function syncDots() {
+        dots.forEach(function (dot, i) {
+          dot.classList.toggle('active', order[0] === i);
+        });
+      }
+
+      /* ---- advance (top card flies out, stack moves up) ---- */
+      function advance(flyClass) {
+        if (busy) return;
+        busy = true;
+        var topCard = cards[order[0]];
+        topCard.style.transform = '';
+        // Reset behind cards to their natural positions
+        cards[order[1]].style.transform = '';
+        cards[order[2]].style.transform = '';
+
+        topCard.classList.add(flyClass);
+        // Update dots immediately to the next card
+        var nextTopIdx = order[1];
+        dots.forEach(function (dot, i) { dot.classList.toggle('active', i === nextTopIdx); });
+
+        setTimeout(function () {
+          topCard.classList.remove(flyClass);
+          var gone = order.shift();
+          order.push(gone);
+          applyPositions(true);
+          busy = false;
+        }, 420);
+      }
+
+      /* ---- retreat (bring back card from stack back to front) ---- */
+      function retreat() {
+        if (busy) return;
+        busy = true;
+
+        // Rotate order backwards: last card comes to front
+        var came = order.pop();
+        order.unshift(came);
+
+        var topCard = cards[order[0]];
+        // Instantly place it flying in from the right (off-screen), no transition
+        topCard.classList.add('no-transition', 'fly-right');
+        topCard.dataset.pos = '0';
+        cards[order[1]].dataset.pos = '1';
+        cards[order[2]].dataset.pos = '2';
+
+        // Force reflow then remove fly-right so it animates in
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            topCard.classList.remove('no-transition', 'fly-right');
+            syncDots();
+            setTimeout(function () { busy = false; }, 420);
+          });
+        });
+      }
+
+      /* ── public controls ── */
+      window.swiperNext = function () { advance('fly-left'); };
+      window.swiperPrev = function () { retreat(); };
+      window.swiperGoTo = function (targetIdx) {
+        if (order[0] === targetIdx || busy) return;
+        var pos = order.indexOf(targetIdx);
+        if (pos === 1) {
+          advance('fly-left');
+        } else if (pos === 2) {
+          advance('fly-left');
+          setTimeout(function () { advance('fly-left'); }, 460);
+        }
+      };
+
+      /* ── drag / swipe ── */
+      function onDragStart(x) {
+        if (busy) return;
+        dragActive = true;
+        dragStartX = x;
+        dragDx = 0;
+        cards[order[0]].classList.add('dragging');
+      }
+
+      function onDragMove(x, cancelIfVertical) {
+        if (!dragActive) return;
+        dragDx = x - dragStartX;
+        var top   = cards[order[0]];
+        var mid   = cards[order[1]];
+        var back  = cards[order[2]];
+        var rot   = dragDx * 0.07;
+        top.style.transform = 'translateX(' + dragDx + 'px) rotate(' + rot + 'deg)';
+        // Preview: pull the cards behind forward as drag progresses
+        var prog = Math.min(Math.abs(dragDx) / 120, 1);
+        mid.style.transform  = 'translateY(' + (16 - 16 * prog) + 'px) scale(' + (0.95 + 0.05 * prog) + ')';
+        back.style.transform = 'translateY(' + (28 - 12 * prog) + 'px) scale(' + (0.90 + 0.05 * prog) + ')';
+      }
+
+      function onDragEnd() {
+        if (!dragActive) return;
+        dragActive = false;
+        var top = cards[order[0]];
+        top.classList.remove('dragging');
+        cards[order[1]].style.transform = '';
+        cards[order[2]].style.transform = '';
+
+        if (Math.abs(dragDx) > 80) {
+          top.style.transform = '';
+          advance(dragDx > 0 ? 'fly-right' : 'fly-left');
+        } else {
+          // Snap back
+          top.style.transform = '';
+        }
+        dragDx = 0;
+      }
+
+      // Mouse
+      stage.addEventListener('mousedown', function (e) {
+        if (e.target.closest('a')) return;
+        e.preventDefault();
+        onDragStart(e.clientX);
+      });
+      window.addEventListener('mousemove', function (e) { onDragMove(e.clientX); });
+      window.addEventListener('mouseup',   function ()  { onDragEnd(); });
+
+      // Touch
+      stage.addEventListener('touchstart', function (e) {
+        if (e.target.closest('a')) return;
+        onDragStart(e.touches[0].clientX);
+      }, { passive: true });
+      window.addEventListener('touchmove', function (e) {
+        if (!dragActive) return;
+        e.preventDefault();
+        onDragMove(e.touches[0].clientX);
+      }, { passive: false });
+      window.addEventListener('touchend', function () { onDragEnd(); });
+
+      // Init
+      applyPositions(true);
+    })();
+  </script>
+</body>
+</html>
