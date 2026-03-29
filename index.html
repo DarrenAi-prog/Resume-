@@ -44,7 +44,7 @@
     .contact-pill:hover { border-color: rgba(26,86,219,0.5); color: #60A5FA; transform: scale(1.07); }
     .contact-pill svg { width: 12px; height: 12px; flex-shrink: 0; }
 
-    .stat-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; max-width: 600px; }
+    .stat-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; max-width: 460px; }
     .stat-item { background: rgba(255,255,255,0.02); padding: 1rem 0.8rem; text-align: center; transition: background 0.2s, transform 0.2s; cursor: default; }
     .stat-item:hover { background: rgba(26,86,219,0.12); transform: scale(1.05); }
     .stat-num { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 700; color: #fff; display: block; transition: transform 0.2s; }
@@ -73,16 +73,16 @@
     .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
     /* SUMMARY */
-    .summary-card { background: var(--card); border: 1px solid var(--border); border-left: 3px solid var(--blue); border-radius: 0 10px 10px 0; padding: 1.5rem; font-size: 13px; color: var(--muted); line-height: 1.9; margin-bottom: 1.5rem; display: block; transition: border-left-color 0.2s, transform 0.2s ease; cursor: default; }
+    .summary-card { background: var(--card); border: 1px solid var(--border); border-left: 3px solid var(--blue); border-radius: 0 10px 10px 0; padding: 1.6rem 1.8rem; font-size: 15px; color: rgba(230,237,243,0.75); line-height: 1.95; margin-bottom: 1.8rem; display: block; transition: border-left-color 0.2s, transform 0.2s ease; cursor: default; }
     .summary-card:hover { border-left-color: #60A5FA; transform: scale(1.01); color: var(--text); }
-    .summary-card strong { color: var(--text); font-weight: 500; }
+    .summary-card strong { color: var(--text); font-weight: 600; }
 
-    .highlight-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; }
-    .highlight-card { background: rgba(26,86,219,0.06); border: 1px solid rgba(26,86,219,0.15); border-radius: 10px; padding: 1.2rem; text-align: center; transition: border-color 0.2s, background 0.2s, transform 0.25s ease; cursor: default; }
+    .highlight-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+    .highlight-card { background: rgba(26,86,219,0.06); border: 1px solid rgba(26,86,219,0.15); border-radius: 12px; padding: 1.5rem 1.2rem; text-align: center; transition: border-color 0.2s, background 0.2s, transform 0.25s ease; cursor: default; }
     .highlight-card:hover { border-color: rgba(26,86,219,0.5); background: rgba(26,86,219,0.1); transform: translateY(-4px) scale(1.02); }
-    .highlight-icon { font-size: 22px; margin-bottom: 8px; display: block; transition: transform 0.2s ease; }
+    .highlight-icon { font-size: 28px; margin-bottom: 10px; display: block; transition: transform 0.2s ease; }
     .highlight-card:hover .highlight-icon { transform: scale(1.2) rotate(-5deg); }
-    .highlight-label { font-size: 11px; color: var(--muted); line-height: 1.5; display: block; transition: color 0.2s, transform 0.18s ease; }
+    .highlight-label { font-size: 13px; color: rgba(230,237,243,0.7); line-height: 1.6; display: block; transition: color 0.2s, transform 0.18s ease; }
     .highlight-card:hover .highlight-label { color: var(--text); transform: scale(1.04); }
 
     /* APP SWIPER */
@@ -112,9 +112,9 @@
     .sc-name { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 800; color: #fff; display: block; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color 0.2s; }
     .swiper-card[data-pos="0"]:hover .sc-name { color: #60A5FA; }
     .sc-sub { font-size: 10px; color: var(--muted); display: block; margin-bottom: 5px; line-height: 1.4; }
-    .sc-screenshots { display: flex; gap: 5px; height: 195px; margin-bottom: 11px; border-radius: 10px; overflow: hidden; flex-shrink: 0; }
-    .sc-shot { flex: 1; object-fit: cover; object-position: center bottom; border-radius: 8px; min-width: 0; display: block; pointer-events: none; }
-    .sc-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
+    .sc-screenshots { display: flex; gap: 5px; height: 195px; margin-top: auto; margin-bottom: 11px; border-radius: 10px; overflow: hidden; flex-shrink: 0; }
+    .sc-shot { flex: 1; object-fit: cover; object-position: center 20%; border-radius: 8px; min-width: 0; display: block; pointer-events: none; }
+    .sc-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
 
     .app-badges { display: flex; gap: 4px; flex-wrap: wrap; }
     .app-badge { font-size: 9px; padding: 2px 7px; border-radius: 4px; letter-spacing: 0.05em; text-transform: uppercase; display: inline-block; }
@@ -123,7 +123,7 @@
     .badge-live { background: rgba(16,185,129,0.12); color: #34D399; border: 1px solid rgba(16,185,129,0.25); }
     .skill-tags { display: flex; flex-wrap: wrap; gap: 5px; }
     .skill-tag { font-size: 10px; padding: 3px 8px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 4px; color: var(--muted); display: inline-block; transition: color 0.18s, border-color 0.18s, transform 0.18s, background 0.18s; cursor: default; }
-    .app-stats { display: flex; gap: 1rem; border-top: 1px solid var(--border); padding-top: 0.7rem; margin-top: auto; }
+    .app-stats { display: flex; gap: 1rem; border-top: 1px solid var(--border); padding-top: 0.7rem; }
     .app-stat-num { font-family: 'Syne', sans-serif; font-size: 0.9rem; font-weight: 700; color: #fff; display: block; transition: color 0.2s; }
     .swiper-card[data-pos="0"]:hover .app-stat-num { color: #60A5FA; }
     .app-stat-label { font-size: 9px; color: var(--muted); letter-spacing: 0.04em; display: block; }
@@ -204,9 +204,9 @@
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 3.5A1.5 1.5 0 013.5 2h.879a1 1 0 01.958.713l.819 2.866a1 1 0 01-.544 1.174L4.5 7.5s.5 2 2 3.5 3.5 2 3.5 2l1.247-1.112a1 1 0 011.174-.544l2.866.819A1 1 0 0114 13.121V14a1.5 1.5 0 01-1.5 1.5C6.354 15.5.5 9.646.5 3.5A1.5 1.5 0 012 2v1.5z"/></svg>
         708-307-7082
       </a>
-      <a class="contact-pill" href="/cdn-cgi/l/email-protection#1d7c7e76717864782f295d7a707c7471337e7270">
+      <a class="contact-pill" href="mailto:ackleye24@gmail.com">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="14" height="10" rx="1.5"/><path d="M1 3.5l7 5 7-5"/></svg>
-        <span class="__cf_email__" data-cfemail="8cedefe7e0e9f5e9beb8ccebe1ede5e0a2efe3e1">[email&#160;protected]</span>
+        ackleye24@gmail.com
       </a>
       <a class="contact-pill" href="https://getsafeguard.app" target="_blank">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.5"/><path d="M8 1.5c0 0-3 2.5-3 6.5s3 6.5 3 6.5M8 1.5c0 0 3 2.5 3 6.5s-3 6.5-3 6.5M1.5 8h13"/></svg>
@@ -230,8 +230,8 @@
 
   <nav class="nav-tabs">
     <button class="tab-btn active" onclick="showTab('summary',this)">Overview</button>
-    <button class="tab-btn" onclick="showTab('apps',this)">Apps</button>
     <button class="tab-btn" onclick="showTab('experience',this)">Experience</button>
+    <button class="tab-btn" onclick="showTab('apps',this)">Apps</button>
     <button class="tab-btn" onclick="showTab('skills',this)">Skills</button>
   </nav>
 
